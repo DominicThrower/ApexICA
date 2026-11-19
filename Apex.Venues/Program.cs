@@ -1,4 +1,5 @@
 using Apex.Venues.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,9 @@ static void AddTestData(IHost app)
     using (var scope = app.Services.CreateScope())
     {
         var services = scope.ServiceProvider;
+
+        var context = services.GetRequiredService<VenuesDbContext>();
+        context.Database.Migrate();
 
         // Get the DbTestDataInitializer service 
         var initializer = services.GetRequiredService<DbTestDataInitializer>();
